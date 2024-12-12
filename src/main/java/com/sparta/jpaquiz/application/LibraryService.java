@@ -32,20 +32,19 @@ public class LibraryService {
     @Transactional
     public void addCategoryWithBooks(String categoryName, String bookTitle1, String bookTitle2) {
         // 1. categoryName 인자로 새로운 Category(category1) 객체를 생성합니다.
-        Category category = new Category();
-        ...
+        Category category = new Category(categoryName);
 
         // 2. bookTitle1, bookTitle2 인자로 새로운 Book(book1, book2) 객체를 생성합니다.
-        Book book1 = new Book();
-        Book book2 = new Book();
-        ...
+        Book book1 = new Book(bookTitle1);
+        Book book2 = new Book(bookTitle2);
 
         // 3. 생성한 book1, book2을 category1 과 연결합니다. * DB의 외래 키 값을 업데이트하기 위해 Owning 사이드(Book)에 추가
-        book1...
-        book2...
+        book1.assignCategory(category);
+        book2.assignCategory(category);
 
         // 4. category1과 book1, book2 을 연결합니다. * 메모리내 객체 상태 동기화를 위해 Non-Owning 사이드(Category)에도 추가
-        category...
+        category.addBook(book1);
+        category.addBook(book2);
 
         // 5. category1 저장 * Cascade 설정을 활용해 Category 저장 시 Book도 함께 저장
         categoryRepository.save(category);
