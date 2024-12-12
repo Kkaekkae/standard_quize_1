@@ -6,9 +6,11 @@ import com.sparta.jpaquiz.entity.Category;
 import com.sparta.jpaquiz.repository.AuthorRepository;
 import com.sparta.jpaquiz.repository.BookRepository;
 import com.sparta.jpaquiz.repository.CategoryRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 public class LibraryService {
 
@@ -33,19 +35,21 @@ public class LibraryService {
     public void addCategoryWithBooks(String categoryName, String bookTitle1, String bookTitle2) {
         // 1. categoryName 인자로 새로운 Category(category1) 객체를 생성합니다.
         Category category = new Category();
-        ...
+        category.setName(categoryName);
 
         // 2. bookTitle1, bookTitle2 인자로 새로운 Book(book1, book2) 객체를 생성합니다.
         Book book1 = new Book();
         Book book2 = new Book();
-        ...
+        book1.setTitle(bookTitle1);
+        book2.setTitle(bookTitle2);
 
         // 3. 생성한 book1, book2을 category1 과 연결합니다. * DB의 외래 키 값을 업데이트하기 위해 Owning 사이드(Book)에 추가
-        book1...
-        book2...
+        category.addBook(book1);
+        category.addBook(book2);
 
         // 4. category1과 book1, book2 을 연결합니다. * 메모리내 객체 상태 동기화를 위해 Non-Owning 사이드(Category)에도 추가
-        category...
+        category.getBooks().add(book1);
+        category.getBooks().add(book2);
 
         // 5. category1 저장 * Cascade 설정을 활용해 Category 저장 시 Book도 함께 저장
         categoryRepository.save(category);
