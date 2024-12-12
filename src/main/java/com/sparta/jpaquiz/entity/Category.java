@@ -1,19 +1,18 @@
 package com.sparta.jpaquiz.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
-@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category {
 
     @Id
@@ -28,7 +27,11 @@ public class Category {
      * 조건: 연관된 책(Book) 엔티티는 실제로 필요할때만 DB에서 조회하도록 명시적으로 설정
      * Hint: Cascade 설정을 추가하고 Lazy 로딩 전략을 사용하세요!
      */
-    @OneToMany(...)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Book> books = new ArrayList<>();
 
+    public Category(String categoryName) {
+        this.name = categoryName;
+        this.books = new ArrayList<>();
+    }
 }
