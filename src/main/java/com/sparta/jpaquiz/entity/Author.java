@@ -1,10 +1,6 @@
 package com.sparta.jpaquiz.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,7 +24,12 @@ public class Author {
      * 조건: 중간테이블 이름은 명시적으로 "book_author"로 설정
      * 조건: 책/저자의 외래키 이름은 명시적으로 각각 "book_id"/"author_id"로 설정
      */
-    @ManyToMany(...)
+    @ManyToMany
+    @JoinTable(
+            name = "book_author",   // 중간 테이블 이름
+            joinColumns = @JoinColumn(name = "author_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
     private List<Book> books = new ArrayList<>();
 
 }
