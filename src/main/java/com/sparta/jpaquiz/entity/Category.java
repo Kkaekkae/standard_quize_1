@@ -36,5 +36,7 @@ public class Category {
     // Book과 연관 관계를 추가하는 메서드
     public void addBook(Book book) {
         this.books.add(book);
+        book.assignCategory(this); // DB에 insert는 문제없이 된다. 하지만 이게 없으면 다른 코드에서 참조한다고 했을때 인스턴스에서 업데이트 안된경우가 있기 때문에 유의하기!
     }
+
 }
