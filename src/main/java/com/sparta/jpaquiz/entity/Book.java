@@ -1,16 +1,20 @@
 package com.sparta.jpaquiz.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -30,7 +34,8 @@ public class Book {
      * 조건: 연관된 카테고리(Category)엔티티는 실제로 필요할때만 DB에서 조회하도록 명시적으로 설정
      * Hint: ManyToOne 관계를 정의하고 Fetch 전략을 Lazy로 설정하세요.
      */
-    @ManyToOne(...)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="category_id_ref")
     private Category category;
 
     /**
@@ -41,7 +46,12 @@ public class Book {
      * 조건: 중간테이블 이름은 명시적으로 "book_author"로 설정
      * 조건: 책/저자의 외래키 이름은 명시적으로 각각 "book_id"/"author_id"로 설정
      */
-    @ManyToMany(...)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "book_author",
+        joinColumns = @JoinColumn(name = "book_id"),
+        inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
     private List<Author> authors = new ArrayList<>();
 
 }
