@@ -1,10 +1,6 @@
 package com.sparta.jpaquiz.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,7 +24,23 @@ public class Category {
      * 조건: 연관된 책(Book) 엔티티는 실제로 필요할때만 DB에서 조회하도록 명시적으로 설정
      * Hint: Cascade 설정을 추가하고 Lazy 로딩 전략을 사용하세요!
      */
-    @OneToMany(...)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Book> books = new ArrayList<>();
 
+
+    public Category(String name) {
+        this.name = name;
 }
+
+    public Category() {
+
+}
+
+    public void addBook(Book book) {
+        books.add(book); // 리스트에 책 추가
+        book.setCategory(this); // Owning Side에도 관계 설정
+    }
+}
+// 1. mappedby = book 클래스에 있는 category 연결
+// 2. cascade = cascadetype. all = 카테고리 저장 삭제 ,관련된 책도 자동으로
+// 3. fetch = fetchtype.lazy 책정보는 필요할 때만 가져온다 ,프로그램 속도

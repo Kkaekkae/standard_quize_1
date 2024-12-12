@@ -28,8 +28,10 @@ public class Author {
      * 조건: 중간테이블 이름은 명시적으로 "book_author"로 설정
      * 조건: 책/저자의 외래키 이름은 명시적으로 각각 "book_id"/"author_id"로 설정
      */
-    @ManyToMany(...)
+    @ManyToMany(mappedBy = "authors")
     private List<Book> books = new ArrayList<>();
 
 }
 
+// 1.mappedBy = "authors": Book 클래스에서 이미 관계를 설정
+// 2. mappedBy 사용해서 읽기만
